@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
@@ -26,6 +29,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final int PICK_PHOTO_REQUEST = 2;
     public static final int PICK_VIDEO_REQUEST = 3;
 
+    public static final int MEDIA_TYPE_IMAGE = 4;
+    public static final int MEDIA_TYPE_VIDEO = 5;
+
+    protected Uri mMediaUri;
+
 
 
 
@@ -35,7 +43,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             switch (i){
                 case 0: //take pic
                     Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(takePhotoIntent,TAKE_PHOTO_REQUEST);
+                    mMediaUri = getOutputMediaUri(MEDIA_TYPE_IMAGE);
+                    if (mMediaUri == null){
+                        Toast.makeText(MainActivity.this,
+                                "Problem accessing external storage",Toast.LENGTH_LONG);
+                    }
+
+                    else{
+                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT,mMediaUri);
+                        startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
+                    }
+
                 case 1: //take vid
                     break;
                 case 2: //select pic
@@ -44,6 +62,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     break;
 
             }
+        }
+
+        private Uri getOutputMediaUri(int mediaType) {
+            if (isExternalStorageAvailable()) {
+                return null;
+            }
+            else{
+                return null;
+            }
+        }
+
+        private boolean isExternalStorageAvailable(){
+            String state = Environment.getExternalStorageState();
+
+            if (state.equals(Environment.MEDIA_MOUNTED)){
+                return true;
+            }
+            else{
+                return false;
+            }
+
         }
     };
 
