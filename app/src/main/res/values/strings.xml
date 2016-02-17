@@ -9,5 +9,11 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_edit_friends">Edit Friends</string>
+    <string-array name="camera_choices">
+        <item>Take picture</item>
+        <item>Take video</item>
+        <item>Choose picture</item>
+        <item>Choose video</item>
+    </string-array>
 
 </resources>
