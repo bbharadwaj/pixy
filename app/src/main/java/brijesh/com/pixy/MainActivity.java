@@ -20,6 +20,11 @@ import android.widget.Toast;
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -66,7 +71,48 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         private Uri getOutputMediaUri(int mediaType) {
             if (isExternalStorageAvailable()) {
-                return null;
+
+                String appName = MainActivity.this.getString(R.string.app_name);
+
+                //Get the external storage directory
+               File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory
+                       (Environment.DIRECTORY_PICTURES), appName);
+
+               //Create our sub directory
+                if (! mediaStorageDir.exists()){
+                   if(! mediaStorageDir.mkdirs()){
+                       Log.e(TAG, "Failed to create media storage directory");
+                       return null;
+                   }
+
+                }
+
+                //Create filename and file
+
+                File mediaFile;
+                Date now = new Date();
+                String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(now);
+
+                String path = mediaStorageDir.getPath() + File.separator;
+
+                if (mediaType == MEDIA_TYPE_IMAGE){
+                    mediaFile = new File(path + "IMG_" + timestamp + ".jpg");
+                }
+
+                else if (mediaType == MEDIA_TYPE_VIDEO){
+                    mediaFile = new File(path + "VID_" + timestamp + ".mp4");
+                }
+
+                else{
+                    return null;
+                }
+
+                //Return the file's Uri
+
+                Log.d(TAG, "File: " + Uri.fromFile(mediaFile));
+
+                return Uri.fromFile(mediaFile);
+
             }
             else{
                 return null;
@@ -149,6 +195,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){
+            //worked
+
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(mMediaUri);
+            sendBroadcast(mediaScanIntent);
+        }
+
+        else if (resultCode == RESULT_CANCELED){
+            Toast.makeText(this, "Sorry, something went wrong", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
