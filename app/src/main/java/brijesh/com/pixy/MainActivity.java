@@ -21,6 +21,9 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,6 +39,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public static final int MEDIA_TYPE_IMAGE = 4;
     public static final int MEDIA_TYPE_VIDEO = 5;
+
+    public static final int FILE_SIZE_LIMIT = 1024*1024*10;
 
     protected Uri mMediaUri;
 
@@ -59,11 +64,34 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                         startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
                     }
 
+                    break;
+
                 case 1: //take vid
+                    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    mMediaUri = getOutputMediaUri(MEDIA_TYPE_VIDEO);
+                    if (mMediaUri == null){
+                        Toast.makeText(MainActivity.this,
+                                "Problem accessing external storage",Toast.LENGTH_LONG);
+                    }
+
+                    else{
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT,mMediaUri);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
+                    }
                     break;
+
                 case 2: //select pic
+                    Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    choosePhotoIntent.setType("image/*");
+                    startActivityForResult(choosePhotoIntent,PICK_PHOTO_REQUEST);
                     break;
+
                 case 3: //select video
+                    Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseVideoIntent.setType("video/*");
+                    startActivityForResult(chooseVideoIntent,PICK_VIDEO_REQUEST);
                     break;
 
             }
@@ -202,9 +230,65 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         if (resultCode == RESULT_OK){
             //worked
 
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanIntent.setData(mMediaUri);
-            sendBroadcast(mediaScanIntent);
+            if (requestCode == PICK_PHOTO_REQUEST || requestCode == PICK_VIDEO_REQUEST){
+                if (data == null){
+                    Toast.makeText(this, "Sorry, something went wrong", Toast.LENGTH_LONG).show();
+
+                }
+
+                else{
+                    mMediaUri = data.getData();
+                }
+
+                Log.i(TAG, "MediaURL: " + mMediaUri);
+
+                if (requestCode == PICK_VIDEO_REQUEST){
+                    int fileSize = 0;
+                    InputStream inputStream = null;
+                    try{
+                        inputStream = getContentResolver().openInputStream(mMediaUri);
+                        fileSize = inputStream.available();
+
+                    }
+
+                    catch (FileNotFoundException e){
+
+                        Toast.makeText(this,
+                                getString(R.string.file_size_error),Toast.LENGTH_LONG).show();
+                        return;
+
+                    }
+
+                    catch (IOException e){
+                        Toast.makeText(this,
+                                getString(R.string.file_size_error),Toast.LENGTH_LONG).show();
+                        return;
+
+                    }
+
+                    finally {
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            //left blank, because thug life
+                        }
+                    }
+
+                    if (fileSize >= FILE_SIZE_LIMIT){
+                        Toast.makeText(this,
+                                getString(R.string.message_file_size),Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                }
+
+            }
+            else {
+
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(mMediaUri);
+                sendBroadcast(mediaScanIntent);
+            }
         }
 
         else if (resultCode == RESULT_CANCELED){
