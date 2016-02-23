@@ -42,7 +42,7 @@ public class FriendsFragment extends ListFragment{
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
 
-        getActivity().setProgressBarIndeterminate(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
 
         ParseQuery<ParseUser> query = mFriendsRelation.getQuery();
         query.orderByAscending(ParseConstants.KEY_USERNAME);
@@ -50,7 +50,7 @@ public class FriendsFragment extends ListFragment{
             @Override
             public void done(List<ParseUser> friends, ParseException e) {
 
-                getActivity().setProgressBarIndeterminate(false);
+
 
                 if (e == null) {
                     //works
@@ -70,8 +70,11 @@ public class FriendsFragment extends ListFragment{
                     );
 
                     setListAdapter(adapter);
+                    getActivity().setProgressBarIndeterminateVisibility(false);
+
 
                 } else {
+                    getActivity().setProgressBarIndeterminateVisibility(false);
                     Log.e(TAG, e.getMessage());
                     AlertDialog.Builder builder = new AlertDialog.Builder(getListView().getContext());
                     builder.setMessage(e.getMessage())

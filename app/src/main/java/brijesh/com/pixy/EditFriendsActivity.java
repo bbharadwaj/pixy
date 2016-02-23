@@ -57,7 +57,7 @@ public class EditFriendsActivity extends ListActivity {
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> parseUsers, ParseException e) {
-                setProgressBarIndeterminateVisibility(false);
+
 
                 if (e == null) {
                     //worked
@@ -81,9 +81,11 @@ public class EditFriendsActivity extends ListActivity {
                     //Ensure old friends are already checked
 
                     addFriendCheckmarks();
+                    setProgressBarIndeterminateVisibility(false);
 
                 } else {
                     //it fucked up
+                    setProgressBarIndeterminateVisibility(false);
                     Log.e(TAG, e.getMessage());
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditFriendsActivity.this);
                     builder.setMessage(e.getMessage())

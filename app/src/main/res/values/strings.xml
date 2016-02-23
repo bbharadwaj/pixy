@@ -11,11 +11,16 @@
     <string name="title_activity_edit_friends">Edit Friends</string>
     <string name="file_size_error">There was a problem with the file selected</string>
     <string name="message_file_size">File should be less than 10 MB.</string>
+
     <string-array name="camera_choices">
         <item>Take picture</item>
         <item>Take video</item>
         <item>Choose picture</item>
         <item>Choose video</item>
     </string-array>
+
+    <string name="title_activity_recipients">Select Recipients</string>
+    <string name="empty_recipients">Select a few recipients from your friends!</string>
+    <string name="error_selecting_file">Error selecting file</string>
 
 </resources>

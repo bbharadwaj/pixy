@@ -16,10 +16,5 @@ public class PixyApplication extends Application {
         Parse.initialize(this, "YNc315zGvkvG6hTgPFCMA9rvG1r6irh3g5r2jdvb",
                 "lD6oaWeAyVOSZNesa2GXCtCMSqdquiDPdOm63EYJ");
 
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
-
     }
 }
