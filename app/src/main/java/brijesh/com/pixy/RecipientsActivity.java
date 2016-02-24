@@ -164,8 +164,9 @@ public class RecipientsActivity extends ListActivity {
             public void done(ParseException e) {
                 if (e == null){
 
-                    Toast.makeText(RecipientsActivity.this,
-                            "Message sent!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RecipientsActivity.this, "Message sent!",
+                            Toast.LENGTH_LONG).show();
+
 
                 }
 
