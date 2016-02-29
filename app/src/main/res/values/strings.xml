@@ -22,5 +22,6 @@
     <string name="title_activity_recipients">Select Recipients</string>
     <string name="empty_recipients">Select a few recipients from your friends!</string>
     <string name="error_selecting_file">Error selecting file</string>
+    <string name="title_activity_view_image">Pixy</string>
 
 </resources>
