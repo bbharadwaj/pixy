@@ -24,4 +24,16 @@
     <string name="error_selecting_file">Error selecting file</string>
     <string name="title_activity_view_image">Pixy</string>
 
+
+    <string name="content_desc_background">Background image</string>
+    <string name="subtitle">Like Snapchat but simpler.</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="login_button_label">LOGIN</string>
+    <string name="sign_up_text">Don\'t have an account? Sign up!</string>
+    <string name="signup_button_label">SIGN UP</string>
+    <string name="cancel_button_label">CANCEL</string>
+    <string name="send_label">Send</string>
+
+
 </resources>
