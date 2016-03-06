@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Timer;
@@ -24,17 +26,30 @@ public class ViewImageActivity extends Activity {
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Uri imageUri = getIntent().getData();
-        Picasso.with(this).load(imageUri.toString()).into(imageView);
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        Picasso.with(this).load(imageUri.toString()).into(imageView, new Callback() {
             @Override
-            public void run() {
+            public void onSuccess() {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
 
-                finish();
+                        finish();
+
+                    }
+                }, 10000);
 
             }
-        }, 10000);
+
+            @Override
+            public void onError() {
+
+                Toast.makeText(ViewImageActivity.this, "Taking too much time to load", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
 
     }
 

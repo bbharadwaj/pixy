@@ -40,6 +40,7 @@ public class FriendsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.user_grid, container, false);
 
         mGridView = (GridView)rootView.findViewById(R.id.friendsGrid);
+
         TextView emptyTextView = (TextView)rootView.findViewById(android.R.id.empty);
         mGridView.setEmptyView(emptyTextView);
 
@@ -64,6 +65,9 @@ public class FriendsFragment extends Fragment {
 
 
                 if (e == null) {
+
+                    getActivity().setProgressBarIndeterminateVisibility(false);
+
                     //works
 
                     mFriends = friends;
@@ -84,7 +88,7 @@ public class FriendsFragment extends Fragment {
                         ((UserAdapter)mGridView.getAdapter()).refill(mFriends);
                     }
 
-                    getActivity().setProgressBarIndeterminateVisibility(false);
+
 
 
                 } else {

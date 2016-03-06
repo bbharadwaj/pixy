@@ -43,8 +43,10 @@ public class EditFriendsActivity extends Activity {
         setContentView(R.layout.user_grid);
 
         mGridView = (GridView)findViewById(R.id.friendsGrid);
+
         TextView emptyTextView = (TextView)findViewById(android.R.id.empty);
         mGridView.setEmptyView(emptyTextView);
+
         mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
