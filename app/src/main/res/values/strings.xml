@@ -34,6 +34,7 @@
     <string name="signup_button_label">SIGN UP</string>
     <string name="cancel_button_label">CANCEL</string>
     <string name="send_label">Send</string>
+    <string name="push_message">You have a new message from %s!</string>
 
 
 </resources>

@@ -15,6 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import brijesh.com.pixy.R;
+import brijesh.com.pixy.adapters.PixyApplication;
 
 
 public class LoginActivity extends Activity {
@@ -77,6 +78,12 @@ public class LoginActivity extends Activity {
 
                             if (e == null) {
                                 // Success!
+
+                                PixyApplication.updateParseInstallation(user);
+
+
+
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
